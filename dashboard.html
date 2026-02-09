@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mis Tokens</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <h2>🎟️ Mis Tokens</h2>
+  <div id="tokens"></div>
+
+<script>
+const supabase = supabase.createClient("SUPABASE_URL","SUPABASE_ANON_KEY");
+
+async function load() {
+  const { data } = await supabase.from("tokens").select("*");
+  data?.forEach(t => {
+    document.getElementById("tokens").innerHTML +=
+      `<img src="${t.image_url}" width="200" />`;
+  });
+}
+load();
+</script>
+</body>
+</html>
