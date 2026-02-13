@@ -2,9 +2,33 @@
 <html>
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Reclama tu pieza exclusiva de Artesano</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/55c38c0fd99bebaddb105a562/2e8cc5737445878ad00aed537.js");</script>
+  <style>
+  body {
+    font-family: system-ui, sans-serif;
+    padding: 1rem;
+    margin: 0;
+  }
+
+  form {
+    max-width: 420px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  input, button {
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+
+  button {
+    cursor: pointer;
+  }
+</style>
+<script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/55c38c0fd99bebaddb105a562/2e8cc5737445878ad00aed537.js");</script>
 </head>
 <body>
   <h1>🎧 Gracias por el pre-save</h1>
@@ -22,6 +46,39 @@
     <button>Entrar</button>
   </form>
 
-  <script src="app.js"></script>
+  <script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+  const supabase = createClient(
+    "SUPABASE_URL",
+    "SUPABASE_ANON_KEY"
+);
+  )
+
+  const form = document.getElementById('signup')
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    const name = document.getElementById('name').value
+    const email = document.getElementById('email').value
+
+    const { data, error } = await supabase
+      .from('presave_leads')
+      .insert([{ name, email }])
+
+    console.log("DATA:", data)
+    console.log("ERROR:", error)
+
+    if (error) {
+      alert(error.message)
+      return
+    }
+
+    localStorage.setItem('user_email', email)
+    window.location.href = "dashboard.html"
+  })
+</script>
+
 </body>
 </html>
